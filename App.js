@@ -7,10 +7,7 @@ export default class App extends React.Component {
   render() {
     return( 
       <NativeRouter>
-        <Route path="/" render={ () => {
-          return ( <LaunchScreen /> )
-        } } />
-        
+        <Route path="/" exact component={ LaunchScreen } />
       </NativeRouter>
     );
   }
