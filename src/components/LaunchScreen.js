@@ -5,6 +5,13 @@ import AnimatedView from './AnimatedView';
 
 class LaunchScreen extends Component {
 
+	componentWillMount(){
+		let { changeColor, changeActiveSpace } = this.props;
+		changeColor('#e26c5a');
+		changeActiveSpace('launchscreen');
+	}
+
+
 	render(){
 		return(
 			<AnimatedView style={ styles.container }>
@@ -19,7 +26,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: 'flex',
-    backgroundColor: '#18819b',
     alignItems: 'center',
     justifyContent: 'center',
   },

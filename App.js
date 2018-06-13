@@ -1,47 +1,109 @@
 import React from 'react';
 import { StatusBar, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
-
+import Color  from 'color';
 import LaunchScreen from './src/components/LaunchScreen';
 import About from './src/components/About';
 import Connect from './src/containers/Connect';
 
 export default class App extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      backgroundColor: '#9c5be5',
+      lightenFactor: '0.1',
+      activeSpace: 'launchscreen',
+    };
+  }
+
+  changeColor(color){
+    this.setState({ backgroundColor: color });
+  }
+
+  changeActiveSpace(activeSpace){
+    this.setState({activeSpace});
+  }
+
+  chooseBackground(name){
+    let { backgroundColor, lightenFactor, activeSpace } = this.state;
+    return activeSpace === name ? backgroundColor : Color(backgroundColor).lighten(lightenFactor); 
+  }
+
   render() {
+    let { backgroundColor, lightenFactor, activeSpace } = this.state;
     return( 
+
       <NativeRouter>
-        <View style={styles.container}>
+
+        <View style={{ ...styles.container, backgroundColor}}>
+
           <StatusBar hidden={true}/>
+
           <View style={styles.container}>
-            <Route path="/" exact component={ LaunchScreen } />
-            <Route path="/about" exact component={ About } />
-            <Route path="/connect" exact component={ Connect } />
+            <Route 
+              path="/" 
+              exact
+              render={()=>{ 
+                return (<LaunchScreen changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
+              }/>
+            <Route 
+              path="/about" 
+              exact
+              render={()=>{ 
+                this.changeColor.bind(this, '#5a9ce2');
+                return (<About changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
+            }/>
+            <Route 
+              path="/connect" 
+              exact
+              render={()=>{ 
+                this.changeColor.bind(this, '#5ae28e');
+                return (<Connect changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
+            }/>
           </View>
-          <View style={styles.navContainer}>
-            <Link style={styles.navItemBorder} component={TouchableOpacity} to="/">
-              <Text style={styles.navItemText}>Home</Text>
+
+          <View style={{...styles.navContainer, backgroundColor, }}>
+            
+            <Link style={{
+                  ...styles.navItem, 
+                  backgroundColor: this.chooseBackground("launchscreen"),
+                }} 
+              component={TouchableOpacity} 
+              to="/">
+              <Text style={{...styles.navItemText}}>Home</Text>
             </Link>
-            <Link style={styles.navItemBorder} component={TouchableOpacity} to="/about">
-              <Text style={styles.navItemText}>About</Text>
+            
+            <Link style={{
+                  ...styles.navItem, 
+                  backgroundColor: this.chooseBackground("about"),
+                }} 
+              component={TouchableOpacity} 
+              to="/about">
+              <Text style={{...styles.navItemText}}>About</Text>
             </Link>
-            <Link style={styles.navItem} component={TouchableOpacity} to="/connect">
-              <Text style={styles.navItemText}>Connect</Text>
+            
+            <Link style={{
+                  ...styles.navItem, 
+                  backgroundColor: this.chooseBackground("connect"),
+                }} 
+              component={TouchableOpacity} 
+              to="/connect">
+              <Text style={{...styles.navItemText}}>Connect</Text>
             </Link>
+
           </View>
+
         </View>
+
       </NativeRouter>
     );
   }
 }
 
-const navColor = '#6bd3ea';
-const navItemColor = "#35b2ce"
-
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     display: 'flex',
-    backgroundColor: '#18819b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -50,24 +112,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     height: 50,
-    backgroundColor: navColor,
+    // borderTopWidth: 1,
   },
   navItem: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: navItemColor,
-  },
-  navItemBorder: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRightWidth: 1,
-    borderRightColor: '#1699b7',
-    backgroundColor: navItemColor,
   },
   navItemText: {
     color: '#fff',
   }
-}); 
+}; 
 

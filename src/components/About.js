@@ -4,6 +4,12 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import AnimatedView from './AnimatedView';
 
 class About extends Component {
+  
+  componentWillMount(){
+    let { changeColor, changeActiveSpace } = this.props;
+    changeColor('#5a9ce2');
+    changeActiveSpace('about');
+  }
   render(){
     return(
       <AnimatedView style={styles.container}>
@@ -17,7 +23,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: 'flex',
-    backgroundColor: '#18819b',
     alignItems: 'center',
     justifyContent: 'center',
   },

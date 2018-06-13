@@ -5,10 +5,17 @@ import { NativeRouter, Route, Link } from 'react-router-native';
 import AnimatedView from '../components/AnimatedView';
 
 class Connect extends Component {
+
+	componentWillMount(){
+		let { changeColor, changeActiveSpace } = this.props;
+		changeColor('#9c5be5');
+		changeActiveSpace('connect')
+	}
+
 	render(){
 	    return(
 	      <AnimatedView style={styles.container}>
-	        <Text style={styles.text}>Login</Text>
+	        <Text style={styles.text}>Connect</Text>
 	      </AnimatedView>
 	    )
 	  }
@@ -18,7 +25,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: 'flex',
-    backgroundColor: '#18819b',
     alignItems: 'center',
     justifyContent: 'center',
   },
