@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Animated, Easing } from 'react-native';
+
+import AnimatedView from './AnimatedView';
 
 class LaunchScreen extends Component {
+
 	render(){
 		return(
-			<View style={styles.container}>
+			<AnimatedView style={ styles.container }>
 		        <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
 		        <Text style={styles.text}>Contacts Manager</Text>
-	        </View>
+	        </AnimatedView>
 		)
 	}
 }

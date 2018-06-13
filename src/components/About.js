@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
+import AnimatedView from './AnimatedView';
+
 class About extends Component {
   render(){
     return(
-      <View style={styles.container}>
-        <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
+      <AnimatedView style={styles.container}>
         <Text style={styles.text}>About</Text>
-      </View>
+      </AnimatedView>
     )
   }
 }
@@ -25,10 +26,6 @@ const styles = StyleSheet.create({
     fontSize: 36,
     textAlign: 'center'
   },
-  image: {
-    width: 300,
-    height: 100,
-  }
 });
 
 export default About

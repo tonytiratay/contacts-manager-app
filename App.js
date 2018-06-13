@@ -4,6 +4,7 @@ import { NativeRouter, Route, Link } from 'react-router-native';
 
 import LaunchScreen from './src/components/LaunchScreen';
 import About from './src/components/About';
+import Connect from './src/containers/Connect';
 
 export default class App extends React.Component {
   render() {
@@ -14,13 +15,17 @@ export default class App extends React.Component {
           <View style={styles.container}>
             <Route path="/" exact component={ LaunchScreen } />
             <Route path="/about" exact component={ About } />
+            <Route path="/connect" exact component={ Connect } />
           </View>
           <View style={styles.navContainer}>
             <Link style={styles.navItemBorder} component={TouchableOpacity} to="/">
               <Text style={styles.navItemText}>Home</Text>
             </Link>
-            <Link style={styles.navItem} component={TouchableOpacity} to="/About">
+            <Link style={styles.navItemBorder} component={TouchableOpacity} to="/about">
               <Text style={styles.navItemText}>About</Text>
+            </Link>
+            <Link style={styles.navItem} component={TouchableOpacity} to="/connect">
+              <Text style={styles.navItemText}>Connect</Text>
             </Link>
           </View>
         </View>
