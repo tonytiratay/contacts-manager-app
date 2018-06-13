@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-class LaunchScreen extends Component {
-	render(){
-		return(
-			<View style={styles.container}>
-		        <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
-		        <Text style={styles.text}>Contacts Manager</Text>
-	        </View>
-		)
-	}
+class About extends Component {
+  render(){
+    return(
+      <View style={styles.container}>
+        <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
+        <Text style={styles.text}>About</Text>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LaunchScreen
+export default About
