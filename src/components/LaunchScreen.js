@@ -7,17 +7,17 @@ class LaunchScreen extends Component {
 
 	componentWillMount(){
 		let { changeColor, changeActiveSpace } = this.props;
-		changeColor('#e26c5a');
 		changeActiveSpace('launchscreen');
+		changeColor('#e26c5a');
 	}
 
 
 	render(){
 		return(
 			<AnimatedView style={ styles.container }>
-		        <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
-		        <Text style={styles.text}>Contacts Manager</Text>
-	        </AnimatedView>
+        <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
+        <Text style={styles.text}>Contacts Manager</Text>
+      </AnimatedView>
 		)
 	}
 }

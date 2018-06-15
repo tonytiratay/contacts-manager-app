@@ -5,26 +5,47 @@ class AnimatedView extends React.Component {
   constructor(){
     super();
     this.state = {
-      position: new Animated.Value(-800), 
+      position: new Animated.Value(-400), 
+      opacity: new Animated.Value(0.3), 
     }
   }
   
 
   componentDidMount() {
-    Animated.timing(   
-      this.state.position,    
-      {
-        toValue: 0,          
-        duration: 365,      
-        easing: Easing.elastic(),
-      }
-    ).start();                   
+    Animated.parallel([
+      
+      Animated.timing(   
+        this.state.opacity,    
+        {
+          toValue: 1,         
+          duration: 400,
+          delay: 100,
+          useNativeDriver: true,
+        }
+      ),
+  
+      Animated.spring(   
+        this.state.position,    
+        {
+          toValue: 0,
+          tension: 200,
+          friction: 9,
+          useNativeDriver: true, 
+        }
+      ),
+
+    ]).start();                 
   }
 
   style(){
-    let { position } = this.state;
+    let { position, opacity } = this.state;
     return {
-      marginTop: position, 
+      display: 'flex',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      transform: [{ translateX: Animated.multiply(position, 0) }, { translateY: Animated.multiply(position, 1)  }], 
+      opacity
     };
   }
 
