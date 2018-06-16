@@ -7,7 +7,7 @@ class LaunchScreen extends Component {
 
 	componentWillMount(){
 		let { changeColor, changeActiveSpace } = this.props;
-		changeActiveSpace('launchscreen');
+		changeActiveSpace('about');
 		changeColor('#e26c5a');
 	}
 

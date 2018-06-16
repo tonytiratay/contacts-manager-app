@@ -7,7 +7,7 @@ class About extends Component {
   
   componentWillMount(){
     let { changeColor, changeActiveSpace } = this.props;
-    changeActiveSpace('about');
+    changeActiveSpace('help');
     changeColor('#5a9ce2');
   }
   render(){

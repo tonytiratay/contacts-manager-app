@@ -26,7 +26,7 @@ class ConnectContainer extends Component {
 
   componentWillMount(){
     let { changeColor, changeActiveSpace, checkMail } = this.props;
-    changeActiveSpace('connect')
+    changeActiveSpace('home')
     changeColor('#9c5be5');
   }
 
@@ -51,7 +51,7 @@ class ConnectContainer extends Component {
       return (
         <View style={ styles.errorZone }> 
           { arr.map((err, i)=>{
-              return <Text key={i} style={styles.error}>{err}</Text>
+              return <Text key={i} style={styles.error}>* {err}</Text>
             })
           }
         </View> 
