@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { StatusBar, View, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, Image, TextInput } from 'react-native';
+import { StatusBar, View, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, Image, TextInput, Button } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
 import Color  from 'color';
+import axios from 'axios';
+
 
 import AnimatedView from '../components/AnimatedView';
 
@@ -12,7 +14,58 @@ class Connect extends Component {
     this.state = {
       email: '', 
       password: '',
+      token: '',
+      newUser: false,
     };
+  }
+
+  initApi(){
+    return axios.create({
+      baseURL: 'http://192.168.1.25:5000/api/',
+      timeout: 1000,
+      headers: {'Authorization': this.state.token}
+    });
+  }
+
+  postLogin(){
+    let { email, password } = this.state;
+    this.initApi().post('/users/login', {
+      email,
+      password,
+    })
+      .then((res) => {
+        this.setState({token: res.data.token});
+        this.getCurrent();
+      })
+      .catch( err => console.log(err.response.data) )
+  }
+
+  postRegister(){
+    let { email, password } = this.state;
+    this.initApi().post('/users/register', {
+      email,
+      password,
+      password2: password,
+    })
+      .then( (res) => {
+        if (res.data) {
+          this.login();
+          this.setState({ newUser: true })
+        }
+      })
+      .catch( (err) => {
+        let exists = err.response.data;
+        if (exists) {
+          this.postLogin()
+        }
+        console.log(err.response.data) 
+      })
+  }
+
+  getCurrent(){
+    this.initApi().get('users/current')
+      .then( res => console.log(res.data) )
+      .catch( err => console.log(err.response) );
   }
 
 	componentWillMount(){
@@ -21,15 +74,16 @@ class Connect extends Component {
 		changeColor('#9c5be5');
 	}
 
+  handleSubmit(){
+    this.postRegister();
+  }
+
   handleChange(name, value){
     this.setState({ [name]: value })
   }
 
-	render(){
-	    return(
-          <View style={styles.container}>
-            <AnimatedView>
-              <KeyboardAvoidingView>
+  connect(){
+    return (<KeyboardAvoidingView>
                 
                 <Text style={styles.title}>CONTACT</Text>
                 <Text style={styles.bigText}>MANAGER</Text>
@@ -57,8 +111,30 @@ class Connect extends Component {
                   returnKeyType="go"
                   secureTextEntry={true}
                   spellCheck={false}
-                  onChangeText={this.handleChange.bind(this, "password")}/>
-              </KeyboardAvoidingView>
+                  onChangeText={this.handleChange.bind(this, "password")}
+                  onSubmitEditing={() => this.handleSubmit.bind(this)}/>
+                <Button 
+                  onPress={this.handleSubmit.bind(this)}
+                  title={'Go'}
+                  />
+              </KeyboardAvoidingView>)
+  }
+
+  loggedIn(){
+    return (
+      <View> 
+        <Text style={styles.title}>Félicitations ;)</Text>
+        <Text style={styles.bigText}>Vous êtes connecté !</Text>
+      </View>
+
+    ) 
+  }
+
+	render(){
+	    return(
+          <View style={styles.container}>
+            <AnimatedView>
+              { this.state.token ? this.loggedIn() : this.connect() }
             </AnimatedView>
           </View>
 	    )
