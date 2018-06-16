@@ -37,7 +37,7 @@ export default function user(state = defaultUser, action){
 		break;
 
 		case CLEAR_ERRORS:
-			return { ...defaultUser, errors: false};
+			return { ...state, errors: false};
 		break;
 
 		case LOADING:
