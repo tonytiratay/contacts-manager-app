@@ -3,12 +3,12 @@ import { connect }        from 'react-redux';
 import { bindActionCreators }   from 'redux';
 
 import { addTodo } from '../actions/todos-actions';
+import { register } from '../actions/user-actions';
 
 import { StatusBar, View, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, Image, TextInput, Button } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
 
 import Color  from 'color';
-import axios from 'axios';
 
 
 import AnimatedView from '../components/AnimatedView';
@@ -26,60 +26,9 @@ class ConnectContainer extends Component {
   }
 
   componentWillMount(){
-    let { changeColor, changeActiveSpace } = this.props;
+    let { changeColor, changeActiveSpace, checkMail } = this.props;
     changeActiveSpace('connect')
-    console.log(this.props.addTodo('hello'))
     changeColor('#9c5be5');
-    setTimeout(() => console.log(this.props.todos), 50)
-  }
-
-  initApi(){
-    return axios.create({
-      baseURL: 'http://192.168.1.25:5000/api/',
-      timeout: 1000,
-      headers: {'Authorization': this.state.token}
-    });
-  }
-
-  postLogin(){
-    let { email, password } = this.state;
-    this.initApi().post('/users/login', {
-      email,
-      password,
-    })
-      .then((res) => {
-        this.setState({token: res.data.token});
-        this.getCurrent();
-      })
-      .catch( err => console.log(err.response.data) )
-  }
-
-  postRegister(){
-    let { email, password } = this.state;
-    this.initApi().post('/users/register', {
-      email,
-      password,
-      password2: password,
-    })
-      .then( (res) => {
-        if (res.data) {
-          this.login();
-          this.setState({ newUser: true })
-        }
-      })
-      .catch( (err) => {
-        let exists = err.response.data;
-        if (exists) {
-          this.postLogin()
-        }
-        console.log(err.response.data) 
-      })
-  }
-
-  getCurrent(){
-    this.initApi().get('users/current')
-      .then( res => console.log(res.data) )
-      .catch( err => console.log(err.response) );
   }
 
   handleSubmit(){
@@ -90,7 +39,12 @@ class ConnectContainer extends Component {
     this.setState({ [name]: value })
   }
 
+  register(){
+    this.props.register(this.state.email, this.state.password)
+  }
+
   connect(){
+    console.log(this.props.user)
     return (<KeyboardAvoidingView>
                 
                 <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
@@ -106,9 +60,9 @@ class ConnectContainer extends Component {
                   placeholder="votre@mail.com"
                   returnKeyType="next"
                   spellCheck={false}
-                  onSubmitEditing={() => this.passwordInput.focus()}
+                  onSubmitEditing={() => this.register.bind(this)}
                   onChangeText={this.handleChange.bind(this, "email")}/>
-               
+
                 <TextInput  
                   style={styles.input}
                   required
@@ -121,8 +75,9 @@ class ConnectContainer extends Component {
                   spellCheck={false}
                   onChangeText={this.handleChange.bind(this, "password")}
                   onSubmitEditing={() => this.handleSubmit.bind(this)}/>
+               
                 <Button 
-                  onPress={this.handleSubmit.bind(this)}
+                  onPress={this.register.bind(this)}
                   title={'Go'}
                   />
               </KeyboardAvoidingView>)
@@ -142,7 +97,7 @@ class ConnectContainer extends Component {
 	    return(
           <View style={styles.container}>
             <AnimatedView>
-              { this.state.token ? this.loggedIn() : this.connect() }
+              { this.props.user.token ? this.loggedIn() : this.connect() }
             </AnimatedView>
           </View>
 	    )
@@ -179,19 +134,24 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps( state ){
+function mapStateToProps( {todos, user} ){
   return (
     {
-      todos: state.todos,
+      todos,
+      user,
     }
   );
 }
 
 function mapDispatchToProps( dispatch ){
   return bindActionCreators( {
-    addTodo
+    addTodo,
+    register,
   }, dispatch );
 }
 
 export default connect( mapStateToProps, mapDispatchToProps )( ConnectContainer );
+
+
+ 
 
