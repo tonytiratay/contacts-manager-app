@@ -12,7 +12,6 @@ export default function user(state = defaultUser, action){
 	switch (action.type){
 
 		case REGISTER:
-			console.log('reducer check mail received: ', action.payload);
 			let { errors, data, token, _id, email } = action.payload;
 			if (errors) {
 				return {

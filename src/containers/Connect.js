@@ -43,12 +43,28 @@ class ConnectContainer extends Component {
     this.props.register(this.state.email, this.state.password)
   }
 
+  errors(){
+    let { errors } = this.props.user;
+    let arr = Object.keys(errors).map((obj)=>{
+        return errors[obj]
+      });
+      return (
+        <View style={ styles.errorZone }> 
+          { arr.map((err, i)=>{
+              return <Text key={i} style={styles.error}>{err}</Text>
+            })
+          }
+        </View> 
+      )
+  }
+
   connect(){
-    console.log(this.props.user)
     return (<KeyboardAvoidingView>
                 
                 <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
                 <Text style={styles.text}>Contacts Manager</Text>
+                { this.props.user.errors ? this.errors() : false }
+
                 <TextInput  
                   style={styles.input}
                   required
@@ -131,6 +147,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: Color("#fff").alpha(.4),
     textAlign: 'left',
+  },
+  errorZone: {
+    padding: 10,
+    margin: 10,
+    backgroundColor: 'white'
+  },
+  error: {
+    color: 'red',
   }
 });
 
