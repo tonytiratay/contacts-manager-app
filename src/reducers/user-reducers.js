@@ -1,4 +1,4 @@
-import { REGISTER, LOGOUT, LOADING } from '../actions/user-actions';
+import { REGISTER, LOGOUT, LOADING, CLEAR_ERRORS } from '../actions/user-actions';
 
 const defaultUser = {
 	token: false,
@@ -36,8 +36,12 @@ export default function user(state = defaultUser, action){
 			return defaultUser;
 		break;
 
+		case CLEAR_ERRORS:
+			return { ...defaultUser, errors: false};
+		break;
+
 		case LOADING:
-			return { ...state, loading: true};
+			return { ...state, loading: action.payload};
 		break;
 
 		default:

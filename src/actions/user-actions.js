@@ -1,8 +1,15 @@
 export const REGISTER = 'REGISTER';
 export const LOGOUT = 'LOGOUT';
 export const LOADING = 'LOADING';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 import axios from 'axios';
+
+// ************************************************
+
+// ACTIONS ARE RIGHT HERE, AND FUNCTIONS USED BY THE ACTIONS ARE BELOW
+
+// ************************************************
 
 export async function register(email, password) {
 	let register = await postRegister(email, password);
@@ -13,9 +20,22 @@ export function logout(){
 	return { type: LOGOUT }
 };
 
-export function setLoading(){
-	return { type: LOADING }
+export function setLoading(bool){
+	return { type: LOADING, payload: bool }
 };
+
+export function clearErrors(bool){
+  return { type: CLEAR_ERRORS }
+};
+
+
+// ************************************************
+
+// HERE ARE THE FUNCTIONS USED BY THE ACTIONS
+
+// ************************************************
+
+
 
 // This is used by all the functions underneath
 // It prepares the api url for the calls
@@ -31,7 +51,7 @@ const initApi = function(token){
 
 
 // This function will try to register the user given email and password params.
-// If the api calls responds with an error saying "eamil exists", it tries to log the user
+// If the api calls responds with an error saying "email exists", it tries to log the user
 // If not, it returns the api erros
 
 const postRegister = function(email, password){
@@ -40,19 +60,25 @@ const postRegister = function(email, password){
       password,
       password2: password,
     })
-      .then((res) => {
+      .then((res) => { // Registration succeeded
+        
         if (res.data) {
           return result =  postLogin(email, password);
         }
+
       })
-      .catch((err) => {
+      .catch((err) => { // Registration failer
         let data = err.response.data; 
         let exists = data && data.email && data.email.includes('already exists') || false;
         
-        if (exists) {
+        if (exists) { // If failed beacause user already exists, try to login
+
            return result = postLogin(email, password)
+        
         } else {
-        	return {errors: true, data}
+        	
+          return {errors: true, data}
+
         }
       })
   }
@@ -66,10 +92,10 @@ const postLogin = function(email, password){
       email,
       password,
     })
-      .then((res) => {
+      .then((res) => { // Login succeeded, try to fetch user infos
         return result =  getCurrent(res.data.token);
       })
-      .catch( (err) => {
+      .catch( (err) => { // Login failed
       	return {errors: true, data: err.response.data}
       })
   }
@@ -79,10 +105,10 @@ const postLogin = function(email, password){
 
 const getCurrent = function(token){
 	return initApi(token).get('users/current')
-	  .then((res) => {
+	  .then((res) => { // Fetched infos
 	  	return {  ...res.data, token }
 	  })
-	  .catch( (err) => {
+	  .catch( (err) => { // Did not fetch infos
 	  	return {errors: true, data: err.response.data}
 	  })
 }
