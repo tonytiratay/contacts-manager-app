@@ -1,4 +1,4 @@
-import { REGISTER } from '../actions/user-actions';
+import { REGISTER, LOGOUT } from '../actions/user-actions';
 
 const defaultUser = {
 	token: false,
@@ -29,8 +29,11 @@ export default function user(state = defaultUser, action){
 			return state
 		break;
 
+		case LOGOUT:
+			return defaultUser;
+		break;
 		default:
-		return state;
+		return defaultUser;
 
 	}
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
 
 import { StatusBar, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
@@ -10,7 +11,7 @@ import LaunchScreen from './src/components/LaunchScreen';
 import About from './src/components/About';
 import Connect from './src/containers/Connect';
 
-import store from './src/store'
+import {store, persistor} from './src/store'
 
 
 export default class App extends React.Component {
@@ -45,7 +46,7 @@ export default class App extends React.Component {
   render() {
     let { backgroundColor, lightenFactor, activeSpace } = this.state;
     return( 
-      <Provider store={store}>
+      <Provider store={store}><PersistGate loading={null} persistor={persistor}>
         <NativeRouter>
 
           <View style={{ ...styles.container, backgroundColor}}>
@@ -112,7 +113,7 @@ export default class App extends React.Component {
           </View>
 
         </NativeRouter>
-      </Provider>
+      </PersistGate></Provider>
     );
   }
 }

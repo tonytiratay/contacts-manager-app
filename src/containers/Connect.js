@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect }        from 'react-redux';
 import { bindActionCreators }   from 'redux';
 
-import { addTodo } from '../actions/todos-actions';
-import { register } from '../actions/user-actions';
+import { register, logout } from '../actions/user-actions';
 
 import { StatusBar, View, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, Image, TextInput, Button } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
@@ -76,7 +75,7 @@ class ConnectContainer extends Component {
                   placeholder="votre@mail.com"
                   returnKeyType="next"
                   spellCheck={false}
-                  onSubmitEditing={() => this.register.bind(this)}
+                  onSubmitEditing={() => this.passwordInput.focus()}
                   onChangeText={this.handleChange.bind(this, "email")}/>
 
                 <TextInput  
@@ -90,9 +89,11 @@ class ConnectContainer extends Component {
                   secureTextEntry={true}
                   spellCheck={false}
                   onChangeText={this.handleChange.bind(this, "password")}
-                  onSubmitEditing={() => this.handleSubmit.bind(this)}/>
+                  onSubmitEditing={ this.register.bind(this) }
+                />
                
                 <Button 
+                  ref={(ref) => this.submitInput = ref}
                   onPress={this.register.bind(this)}
                   title={'Go'}
                   />
@@ -103,7 +104,10 @@ class ConnectContainer extends Component {
     return (
       <View> 
         <Text style={styles.title}>Félicitations ;)</Text>
-        <Text style={styles.bigText}>Vous êtes connecté !</Text>
+        <Text style={styles.text}>Vous êtes connecté !</Text>
+        <View style={styles.logout}>
+          <Button onPress={this.props.logout} title="Déconnexion" />
+        </View>
       </View>
 
     ) 
@@ -127,12 +131,12 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontSize: 56,
+    fontSize: 48,
     fontWeight: 'bold',
   },
   text: {
     color: '#fff',
-    fontSize: 36,
+    fontSize: 32,
     textAlign: 'center'
   },
   image: {
@@ -148,6 +152,12 @@ const styles = StyleSheet.create({
     borderColor: Color("#fff").alpha(.4),
     textAlign: 'left',
   },
+  logout: {
+    display: 'flex',
+    marginTop: 50,
+    maxWidth: 250,
+    alignSelf: 'center'
+  },
   errorZone: {
     padding: 10,
     margin: 10,
@@ -161,7 +171,6 @@ const styles = StyleSheet.create({
 function mapStateToProps( {todos, user} ){
   return (
     {
-      todos,
       user,
     }
   );
@@ -169,7 +178,7 @@ function mapStateToProps( {todos, user} ){
 
 function mapDispatchToProps( dispatch ){
   return bindActionCreators( {
-    addTodo,
+    logout,
     register,
   }, dispatch );
 }

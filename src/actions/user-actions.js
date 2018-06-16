@@ -1,4 +1,5 @@
 export const REGISTER = 'REGISTER';
+export const LOGOUT = 'LOGOUT';
 
 import axios from 'axios';
 
@@ -7,6 +8,9 @@ export async function register(email, password) {
 	return { type: REGISTER, payload: register }
 };
 
+export function logout(){
+	return { type: LOGOUT }
+};
 
 // This is used by all the functions underneath
 // It prepares the api url for the calls
