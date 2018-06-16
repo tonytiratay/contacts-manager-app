@@ -1,6 +1,6 @@
 import { REGISTER, LOGOUT, LOADING, CLEAR_ERRORS } from '../actions/user-actions';
 
-const defaultUser = {
+export const defaultUser = {
 	token: false,
 	email: '', 
 	_id: '', 

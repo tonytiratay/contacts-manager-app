@@ -41,7 +41,7 @@ export function clearErrors(bool){
 // It prepares the api url for the calls
 // And allows for an authorization token to be provided
 
-const initApi = function(token){
+export const initApi = function(token){
     return axios.create({
       baseURL: 'http://192.168.1.25:5000/api/',
       timeout: 1000,
@@ -54,7 +54,7 @@ const initApi = function(token){
 // If the api calls responds with an error saying "email exists", it tries to log the user
 // If not, it returns the api erros
 
-const postRegister = function(email, password){
+export const postRegister = function(email, password){
     return initApi().post('/users/register', {
       email,
       password,
@@ -67,8 +67,8 @@ const postRegister = function(email, password){
         }
 
       })
-      .catch((err) => { // Registration failer
-        let data = err.response.data; 
+      .catch((err) => { // Registration failed
+        let data = err && err.response && err.response.data ? err.response.data : err; 
         let exists = data && data.email && data.email.includes('already exists') || false;
         
         if (exists) { // If failed beacause user already exists, try to login
@@ -87,7 +87,7 @@ const postRegister = function(email, password){
 // If the api calls ends with success, calls the "Get current user" method
 // If not, it returns the api erros
 
-const postLogin = function(email, password){
+export const postLogin = function(email, password){
     return initApi().post('/users/login', {
       email,
       password,
@@ -103,7 +103,7 @@ const postLogin = function(email, password){
 // This function will send user info if provided with a token
 // Else will throw error
 
-const getCurrent = function(token){
+export const getCurrent = function(token){
 	return initApi(token).get('users/current')
 	  .then((res) => { // Fetched infos
 	  	return {  ...res.data, token }

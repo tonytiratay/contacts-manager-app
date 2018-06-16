@@ -120,7 +120,7 @@ class ConnectContainer extends Component {
 
 	render(){
 	    return(
-          <View style={styles.container}>
+          <View style={styles.container}><Text>Hello</Text>
             
               { this.props.user.token ? this.loggedIn() : this.props.user.loading ? this.loading() : this.connect() }
             
