@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
+import { connect }        from 'react-redux';
+import { bindActionCreators }   from 'redux';
+
+import { addTodo } from '../actions/todos-actions';
+
 import { StatusBar, View, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, Image, TextInput, Button } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
+
 import Color  from 'color';
 import axios from 'axios';
 
 
 import AnimatedView from '../components/AnimatedView';
 
-class Connect extends Component {
+class ConnectContainer extends Component {
 
   constructor(){
     super()
@@ -17,6 +23,14 @@ class Connect extends Component {
       token: '',
       newUser: false,
     };
+  }
+
+  componentWillMount(){
+    let { changeColor, changeActiveSpace } = this.props;
+    changeActiveSpace('connect')
+    console.log(this.props.addTodo('hello'))
+    changeColor('#9c5be5');
+    setTimeout(() => console.log(this.props.todos), 50)
   }
 
   initApi(){
@@ -68,12 +82,6 @@ class Connect extends Component {
       .catch( err => console.log(err.response) );
   }
 
-	componentWillMount(){
-		let { changeColor, changeActiveSpace } = this.props;
-		changeActiveSpace('connect')
-		changeColor('#9c5be5');
-	}
-
   handleSubmit(){
     this.postRegister();
   }
@@ -85,8 +93,8 @@ class Connect extends Component {
   connect(){
     return (<KeyboardAvoidingView>
                 
-                <Text style={styles.title}>CONTACT</Text>
-                <Text style={styles.bigText}>MANAGER</Text>
+                <Image style={styles.image} source={require('../../public/github-logo-white.png')} />
+                <Text style={styles.text}>Contacts Manager</Text>
                 <TextInput  
                   style={styles.input}
                   required
@@ -151,10 +159,10 @@ const styles = StyleSheet.create({
     fontSize: 56,
     fontWeight: 'bold',
   },
-  bigText: {
+  text: {
     color: '#fff',
     fontSize: 36,
-    marginBottom: 40,
+    textAlign: 'center'
   },
   image: {
     width: 300,
@@ -171,4 +179,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Connect
+function mapStateToProps( state ){
+  return (
+    {
+      todos: state.todos,
+    }
+  );
+}
+
+function mapDispatchToProps( dispatch ){
+  return bindActionCreators( {
+    addTodo
+  }, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( ConnectContainer );
+

@@ -1,10 +1,17 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+
 import { StatusBar, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
+
 import Color  from 'color';
+
 import LaunchScreen from './src/components/LaunchScreen';
 import About from './src/components/About';
 import Connect from './src/containers/Connect';
+
+import store from './src/store'
+
 
 export default class App extends React.Component {
   constructor(){
@@ -38,73 +45,74 @@ export default class App extends React.Component {
   render() {
     let { backgroundColor, lightenFactor, activeSpace } = this.state;
     return( 
+      <Provider store={store}>
+        <NativeRouter>
 
-      <NativeRouter>
+          <View style={{ ...styles.container, backgroundColor}}>
 
-        <View style={{ ...styles.container, backgroundColor}}>
+            <StatusBar hidden={true}/>
 
-          <StatusBar hidden={true}/>
-
-          <View style={styles.container}>
-            <Route 
-              path="/" 
-              exact
-              style={styles.route}
-              render={()=>{ 
-                return (<LaunchScreen changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
+            <View style={styles.container}>
+              <Route 
+                path="/" 
+                exact
+                style={styles.route}
+                render={()=>{ 
+                  return (<LaunchScreen changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
+                }/>
+              <Route 
+                path="/about" 
+                exact
+                style={styles.route}
+                render={()=>{ 
+                  this.changeColor.bind(this, '#5a9ce2');
+                  return (<About changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
               }/>
-            <Route 
-              path="/about" 
-              exact
-              style={styles.route}
-              render={()=>{ 
-                this.changeColor.bind(this, '#5a9ce2');
-                return (<About changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
-            }/>
-            <Route 
-              path="/connect" 
-              exact
-              style={styles.route}
-              render={()=>{ 
-                this.changeColor.bind(this, '#5ae28e');
-                return (<Connect changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
-            }/>
-          </View>
+              <Route 
+                path="/connect" 
+                exact
+                style={styles.route}
+                render={()=>{ 
+                  this.changeColor.bind(this, '#5ae28e');
+                  return (<Connect changeColor={this.changeColor.bind(this)} changeActiveSpace={this.changeActiveSpace.bind(this)} />) }
+              }/>
+            </View>
 
-          <View style={{...styles.navContainer, backgroundColor: Color(backgroundColor).darken(lightenFactor) , }}>
-            
-            <Link style={{
-                  ...styles.navItem, 
-                  backgroundColor: this.chooseBackground("launchscreen"),
-                }} 
-              component={TouchableOpacity} 
-              to="/">
-              <Text style={{...styles.navItemText, color: this.chooseColor("launchscreen"), fontWeight: this.state.space === "launchscreen" ? 'bold' : 'normal' }}>Home</Text>
-            </Link>
-            
-            <Link style={{
-                  ...styles.navItem, 
-                  backgroundColor: this.chooseBackground("about"),
-                }} 
-              component={TouchableOpacity} 
-              to="/about">
-              <Text style={{...styles.navItemText, color: this.chooseColor("about"), fontWeight: this.state.space === "about" ? 'bold' : 'normal' }}>About</Text>
-            </Link>
-            
-            <Link style={{
-                  ...styles.navItem, 
-                  backgroundColor: this.chooseBackground("connect"),
-                }} 
-              component={TouchableOpacity} 
-              to="/connect">
-              <Text style={{...styles.navItemText, color: this.chooseColor("connect"), fontWeight: this.state.space === "connect" ? 'bold' : 'normal' }}>Connect</Text>
-            </Link>
+            <View style={{...styles.navContainer, backgroundColor: Color(backgroundColor).darken(lightenFactor) , }}>
+              
+              <Link style={{
+                    ...styles.navItem, 
+                    backgroundColor: this.chooseBackground("launchscreen"),
+                  }} 
+                component={TouchableOpacity} 
+                to="/">
+                <Text style={{...styles.navItemText, color: this.chooseColor("launchscreen"), fontWeight: this.state.space === "launchscreen" ? 'bold' : 'normal' }}>Home</Text>
+              </Link>
+              
+              <Link style={{
+                    ...styles.navItem, 
+                    backgroundColor: this.chooseBackground("about"),
+                  }} 
+                component={TouchableOpacity} 
+                to="/about">
+                <Text style={{...styles.navItemText, color: this.chooseColor("about"), fontWeight: this.state.space === "about" ? 'bold' : 'normal' }}>About</Text>
+              </Link>
+              
+              <Link style={{
+                    ...styles.navItem, 
+                    backgroundColor: this.chooseBackground("connect"),
+                  }} 
+                component={TouchableOpacity} 
+                to="/connect">
+                <Text style={{...styles.navItemText, color: this.chooseColor("connect"), fontWeight: this.state.space === "connect" ? 'bold' : 'normal' }}>Connect</Text>
+              </Link>
+
+            </View>
 
           </View>
 
-        </View>
-
-      </NativeRouter>
+        </NativeRouter>
+      </Provider>
     );
   }
 }
