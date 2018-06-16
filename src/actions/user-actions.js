@@ -1,5 +1,6 @@
 export const REGISTER = 'REGISTER';
 export const LOGOUT = 'LOGOUT';
+export const LOADING = 'LOADING';
 
 import axios from 'axios';
 
@@ -10,6 +11,10 @@ export async function register(email, password) {
 
 export function logout(){
 	return { type: LOGOUT }
+};
+
+export function setLoading(){
+	return { type: LOADING }
 };
 
 // This is used by all the functions underneath

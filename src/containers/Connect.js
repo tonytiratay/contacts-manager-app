@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect }        from 'react-redux';
 import { bindActionCreators }   from 'redux';
 
-import { register, logout } from '../actions/user-actions';
+import { register, logout, setLoading } from '../actions/user-actions';
 
-import { StatusBar, View, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, Image, TextInput, Button } from 'react-native';
+import { StatusBar, View, KeyboardAvoidingView, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Image, TextInput, Button } from 'react-native';
 import { NativeRouter, Route, Link } from 'react-router-native';
 
 import Color  from 'color';
@@ -39,6 +39,7 @@ class ConnectContainer extends Component {
   }
 
   register(){
+    this.props.setLoading();
     this.props.register(this.state.email, this.state.password)
   }
 
@@ -113,11 +114,15 @@ class ConnectContainer extends Component {
     ) 
   }
 
+  loading(){
+    return <ActivityIndicator size="large" color="#fff"/>
+  }
+
 	render(){
 	    return(
           <View style={styles.container}>
             <AnimatedView>
-              { this.props.user.token ? this.loggedIn() : this.connect() }
+              { this.props.user.token ? this.loggedIn() : this.props.user.loading ? this.loading() : this.connect() }
             </AnimatedView>
           </View>
 	    )
@@ -180,6 +185,7 @@ function mapDispatchToProps( dispatch ){
   return bindActionCreators( {
     logout,
     register,
+    setLoading,
   }, dispatch );
 }
 

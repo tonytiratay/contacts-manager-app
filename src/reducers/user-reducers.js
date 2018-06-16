@@ -1,9 +1,10 @@
-import { REGISTER, LOGOUT } from '../actions/user-actions';
+import { REGISTER, LOGOUT, LOADING } from '../actions/user-actions';
 
 const defaultUser = {
 	token: false,
 	email: '', 
 	_id: '', 
+	loading: false,
 	errors: false,
 };
 
@@ -16,11 +17,13 @@ export default function user(state = defaultUser, action){
 			if (errors) {
 				return {
 					...defaultUser,
+					loading: false,
 					errors: data
 				}
 			} else {
 				return {
 					...defaultUser,
+					loading: false,
 					token,
 					_id,
 					email
@@ -32,6 +35,11 @@ export default function user(state = defaultUser, action){
 		case LOGOUT:
 			return defaultUser;
 		break;
+
+		case LOADING:
+			return { ...state, loading: true};
+		break;
+
 		default:
 		return defaultUser;
 
