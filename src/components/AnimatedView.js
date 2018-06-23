@@ -42,8 +42,6 @@ class AnimatedView extends React.Component {
     return {
       display: 'flex',
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
       transform: [{ translateX: Animated.multiply(position, 0) }, { translateY: Animated.multiply(position, 1)  }], 
       opacity
     };
@@ -51,7 +49,7 @@ class AnimatedView extends React.Component {
 
   render() {
     return (
-      <Animated.View style={ this.style() }>
+      <Animated.View style={ [this.style(), this.props.style] }>
         {this.props.children}
       </Animated.View>
     );

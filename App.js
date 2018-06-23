@@ -4,6 +4,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import {store, persistor} from './src/store';
 
 import ContactApp from './ContactApp';
+import SimpleCalculator from './src/containers/SimpleCalculator';
+
 
 export default class App extends React.Component {
   componentDidCatch(error, info) {
@@ -15,7 +17,7 @@ export default class App extends React.Component {
     return( 
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <ContactApp />
+          <SimpleCalculator />
         </PersistGate>
       </Provider>
     );
