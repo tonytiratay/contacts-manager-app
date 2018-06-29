@@ -6,6 +6,7 @@ import {store, persistor} from './src/store';
 import ContactApp from './ContactApp';
 import SimpleCalculator from './src/containers/SimpleCalculator';
 
+import './config/firebase.js';
 
 export default class App extends React.Component {
   componentDidCatch(error, info) {

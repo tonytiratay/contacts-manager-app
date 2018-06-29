@@ -10,7 +10,11 @@ class SimpleCalculator extends React.Component {
 	render(){
 		return(
 			<View style={{ flex: 1, display: 'flex' }}>
-				<SimpleKeyboard />
+				<SimpleKeyboard 
+					operationText="360 x 5 x 4 x 3"
+					operationTextUnit="€ HT"
+					resultText="25 920"
+					resultTextUnit="€ TTC"/>
 			</View>
 		)
 	}
